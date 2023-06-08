@@ -100,7 +100,7 @@
                                             $tglHariIni = strtotime(date('Y-m-d'));
 
                                             //* Perangkat yang disetujui belum dikembalikan dan kembali sudah jatuh tempo 
-                                            if ($dipinjam == 0 && $tglHariIni >= $tglKembali) : ?>
+                                            if ($dipinjam == 0 && $tglHariIni <= $tglKembali) : ?>
                                                 <a class="btn btn-success btn-xs" onclick="kirimNotifikasi(<?= $row['id'] ?>)">
                                                     <i class="fa fa-send"></i> Email
                                                 </a>
