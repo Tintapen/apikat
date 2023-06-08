@@ -81,7 +81,7 @@ class Laporan extends CI_Controller
                     $row[] = date('d F Y H:i:s', strtotime($value->tglPengembalian));
                     $row[] = "Sudah kembali";
                 } else {
-                    $row[] = "";
+                    $row[] = date('d F Y', strtotime($pinjam->tanggalKembali));
                     $row[] = "Belum kembali";
                 }
                 $row[] = $pinjam->keperluan;
