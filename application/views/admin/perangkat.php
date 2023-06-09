@@ -1,3 +1,5 @@
+<?php $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin"; ?>
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -5,7 +7,7 @@
             <small><?= $subtitle ?></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?= base_url('admin/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="<?= base_url($uri1 . '/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li class="active"><?= $title ?></li>
         </ol>
     </section>

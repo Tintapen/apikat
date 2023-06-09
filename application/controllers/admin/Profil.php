@@ -1,35 +1,38 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Profil extends CI_Controller {
+class Profil extends CI_Controller
+{
 
     public function __construct()
     {
         parent::__construct();
-        if(!$this->session->userdata('level')){
+        if (!$this->session->userdata('level')) {
             $this->session->set_flashdata('pesan', 'Anda harus masuk terlebih dahulu!');
             redirect('home');
         }
     }
 
-	public function index()
-	{
+    public function index()
+    {
         $data['title']      = 'Profil';
         $data['subtitle']   = 'Atur profil anda disini';
 
         $this->db->limit('20');
         $this->db->where('idUser', $this->session->userdata('id'));
         $this->db->order_by('id', 'DESC');
-        $data['log']		= $this->db->get('tb_log');
-		
-		$this->load->view('admin/templates/header', $data);
-		$this->load->view('admin/templates/sidebar');
-		$this->load->view('admin/profil');
-		$this->load->view('admin/templates/footer');
+        $data['log']        = $this->db->get('tb_log');
+
+        $this->load->view('admin/templates/header', $data);
+        $this->load->view('admin/templates/sidebar');
+        $this->load->view('admin/profil');
+        $this->load->view('admin/templates/footer');
     }
-    
+
     public function update($id)
     {
+        $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
+
         $nama           = $_POST['nama'];
         $telp           = $_POST['telp'];
         $email          = $_POST['email'];
@@ -38,27 +41,27 @@ class Profil extends CI_Controller {
         $skin           = $_POST['skin'];
         $foto           = $_FILES['foto'];
 
-        if($foto != ''){
+        if ($foto != '') {
             $config['upload_path'] = './assets/profil/';
             $config['allowed_types'] = '*';
             $config['file_name'] = 'Profil-' . time();
 
             $this->load->library('upload', $config);
 
-            if(!$this->upload->do_upload('foto')){
+            if (!$this->upload->do_upload('foto')) {
                 $foto = '';
             } else {
                 $foto = $this->upload->data('file_name');
             }
         }
 
-        $cekUsername    = $this->db->query('SELECT username FROM tb_user WHERE id="'.$this->session->userdata('id').'" ');
+        $cekUsername    = $this->db->query('SELECT username FROM tb_user WHERE id="' . $this->session->userdata('id') . '" ');
         foreach ($cekUsername->result() as $usr) {
-            if($username == $usr->username) {
+            if ($username == $usr->username) {
 
                 $where = array('id' => $id);
 
-                if($password == '' AND $foto == '') {
+                if ($password == '' and $foto == '') {
                     $data = array(
                         'nama'          => $nama,
                         'telp'          => $telp,
@@ -66,12 +69,12 @@ class Profil extends CI_Controller {
                         'username'      => $username,
                         'skin'          => $skin,
                     );
-                } elseif($password != '' AND $foto == '') {
+                } elseif ($password != '' and $foto == '') {
 
                     $options = [
                         'cost' => 10,
                     ];
-            
+
                     $enkripPassword = password_hash($password, PASSWORD_BCRYPT, $options);
 
                     $data = array(
@@ -82,12 +85,12 @@ class Profil extends CI_Controller {
                         'skin'          => $skin,
                         'password'      => $enkripPassword,
                     );
-                } elseif($password != '' AND $foto != '') {
+                } elseif ($password != '' and $foto != '') {
 
                     $options = [
                         'cost' => 10,
                     ];
-            
+
                     $enkripPassword = password_hash($password, PASSWORD_BCRYPT, $options);
 
                     $data = array(
@@ -99,12 +102,12 @@ class Profil extends CI_Controller {
                         'foto'          => $foto,
                         'password'      => $enkripPassword,
                     );
-                } elseif($password == '' AND $foto != '') {
+                } elseif ($password == '' and $foto != '') {
 
                     $options = [
                         'cost' => 10,
                     ];
-            
+
                     $enkripPassword = password_hash($password, PASSWORD_BCRYPT, $options);
 
                     $data = array(
@@ -116,19 +119,18 @@ class Profil extends CI_Controller {
                         'foto'          => $foto,
                     );
                 }
-                
+
                 $this->m_model->update($where, $data, 'tb_user');
                 $this->session->set_userdata($data);
                 $this->session->set_flashdata('pesan', 'Profil berhasil diubah!');
-                redirect('admin/profil');
-
+                redirect($uri1 . '/profil');
             } else {
-                $cekUsernameTersedia = $this->db->query('SELECT username FROM tb_user WHERE username="'.$username.'" ')->num_rows();
+                $cekUsernameTersedia = $this->db->query('SELECT username FROM tb_user WHERE username="' . $username . '" ')->num_rows();
 
-                if($cekUsernameTersedia == '0') {
+                if ($cekUsernameTersedia == '0') {
                     $where = array('id' => $id);
 
-                    if($password == '' AND $foto == '') {
+                    if ($password == '' and $foto == '') {
                         $data = array(
                             'nama'          => $nama,
                             'telp'          => $telp,
@@ -136,14 +138,14 @@ class Profil extends CI_Controller {
                             'username'      => $username,
                             'skin'          => $skin,
                         );
-                    } elseif($password != '' AND $foto == '') {
-    
+                    } elseif ($password != '' and $foto == '') {
+
                         $options = [
                             'cost' => 10,
                         ];
-                
+
                         $enkripPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-    
+
                         $data = array(
                             'nama'          => $nama,
                             'telp'          => $telp,
@@ -152,14 +154,14 @@ class Profil extends CI_Controller {
                             'skin'          => $skin,
                             'password'      => $enkripPassword,
                         );
-                    } elseif($password != '' AND $foto != '') {
-    
+                    } elseif ($password != '' and $foto != '') {
+
                         $options = [
                             'cost' => 10,
                         ];
-                
+
                         $enkripPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-    
+
                         $data = array(
                             'nama'          => $nama,
                             'telp'          => $telp,
@@ -169,14 +171,14 @@ class Profil extends CI_Controller {
                             'foto'          => $foto,
                             'password'      => $enkripPassword,
                         );
-                    } elseif($password == '' AND $foto != '') {
-    
+                    } elseif ($password == '' and $foto != '') {
+
                         $options = [
                             'cost' => 10,
                         ];
-                
+
                         $enkripPassword = password_hash($password, PASSWORD_BCRYPT, $options);
-    
+
                         $data = array(
                             'nama'          => $nama,
                             'telp'          => $telp,
@@ -186,14 +188,14 @@ class Profil extends CI_Controller {
                             'foto'          => $foto,
                         );
                     }
-                    
+
                     $this->m_model->update($where, $data, 'tb_user');
                     $this->session->set_userdata($data);
                     $this->session->set_flashdata('pesan', 'Profil berhasil diubah!');
-                    redirect('admin/profil');
+                    redirect($uri1 . '/profil');
                 } else {
                     $this->session->set_flashdata('pesanError', 'Username tidak tersedia!');
-                    redirect('admin/profil');
+                    redirect($uri1 . '/profil');
                 }
             }
         }

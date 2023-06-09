@@ -43,6 +43,7 @@
 </head>
 <!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
 <!-- the fixed layout is not compatible with sidebar-mini -->
+<?php $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin"; ?>
 
 <body class="hold-transition skin-<?= $this->session->userdata('skin') ?> fixed <?= ($title == 'Tambah Data Penjualan') ? 'sidebar-collapse' : '' ?>">
   <!-- Site wrapper -->
@@ -97,7 +98,7 @@
                 <!-- Menu Footer-->
                 <li class="user-footer">
                   <div class="pull-left">
-                    <a href="<?= base_url('admin/profil') ?>" class="btn btn-default btn-flat">
+                    <a href="<?= base_url($uri1 . '/profil') ?>" class="btn btn-default btn-flat">
                       <div class="fa fa-user"></div> Profile
                     </a>
                   </div>

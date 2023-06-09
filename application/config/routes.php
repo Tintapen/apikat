@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -52,3 +52,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'home';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+
+$route['user/dashboard'] = 'admin/dashboard';
+$route['user/perangkat'] = 'admin/perangkat';
+
+$route['user/peminjaman'] = 'admin/peminjaman';
+$route['user/peminjaman/kelola/(:num)'] = 'admin/peminjaman/kelola/$1';
+$route['user/peminjaman/cetakdisetujui/(:num)'] = 'admin/peminjaman/cetakdisetujui/$1';
+$route['user/peminjaman/addtocart/(:num)'] = 'admin/peminjaman/addtocart/$1';
+$route['user/peminjaman/delete/(:num)'] = 'admin/peminjaman/delete/$1';
+$route['user/peminjaman/deletecart/(:num)'] = 'admin/peminjaman/deletecart/$1';
+$route['user/peminjaman/respon/(:num)'] = 'admin/peminjaman/respon/$1';
+
+$route['user/profil'] = 'admin/profil';
+$route['user/profil/update/(:num)'] = 'admin/profil/update/$1';
+
+$route['user/notifikasi/user'] = 'admin/notifikasi/user';
+$route['user/notifikasi/dibaca'] = 'admin/notifikasi/dibaca';

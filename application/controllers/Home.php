@@ -8,7 +8,8 @@ class Home extends CI_Controller
     public function index()
     {
         if ($this->session->userdata('level') == 'Administrator' or $this->session->userdata('level') == 'User') {
-            redirect('admin/dashboard');
+            $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
+            redirect($uri1 . '/dashboard');
         } else {
             $data['title']  = 'Login';
             $this->load->view('home', $data);
@@ -18,7 +19,8 @@ class Home extends CI_Controller
     public function login()
     {
         if ($this->session->userdata('level') == 'Administrator' or $this->session->userdata('level') == 'User') {
-            redirect('admin/dashboard');
+            $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
+            redirect($uri1 . '/dashboard');
         } else {
             $data['title']  = 'Login';
             $digit1 = mt_rand(1, 20);
@@ -79,7 +81,8 @@ class Home extends CI_Controller
 
                     $this->m_model->insert($insertLog, 'tb_log');
 
-                    redirect('admin/dashboard');
+                    $uri1 = $row['level'] === "User" ? "user" : "admin";
+                    redirect($uri1 . '/dashboard');
                 } else {
                     $this->session->set_flashdata('pesan', 'Password anda salah!');
                     redirect('home/login');
@@ -223,7 +226,8 @@ class Home extends CI_Controller
     public function forget()
     {
         if ($this->session->userdata('level') == 'Administrator' or $this->session->userdata('level') == 'User') {
-            redirect('admin/dashboard');
+            $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
+            redirect($uri1 . '/dashboard');
         } else {
             $data['title']  = 'Lupa Password';
             $data['aplikasi'] = $this->m_model->get_desc('tb_aplikasi');

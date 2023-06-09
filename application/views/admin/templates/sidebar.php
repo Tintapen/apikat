@@ -1,3 +1,5 @@
+<?php $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin"; ?>
+
 <aside class="main-sidebar">
     <section class="sidebar">
         <!-- <div class="user-panel">
@@ -12,17 +14,17 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
             <li class="<?php if ($this->uri->segment(2) === 'dashboard') echo "active"; ?>">
-                <a href="<?= base_url('admin/dashboard') ?>">
+                <a href="<?= base_url($uri1 . '/dashboard') ?>">
                     <i class="fa fa-tachometer"></i> <span>Dashboard</span>
                 </a>
             </li>
             <li class="<?php if ($this->uri->segment(2) === 'perangkat') echo "active"; ?>">
-                <a href="<?= base_url('admin/perangkat') ?>">
+                <a href="<?= base_url($uri1 . '/perangkat') ?>">
                     <i class="fa fa-laptop"></i> <span>Data Perangkat</span>
                 </a>
             </li>
             <li class="<?php if ($this->uri->segment(2) === 'peminjaman') echo "active"; ?>">
-                <a href="<?= base_url('admin/peminjaman') ?>">
+                <a href="<?= base_url($uri1 . '/peminjaman') ?>">
                     <i class="fa fa-bookmark"></i> <span>Data Peminjaman</span>
                 </a>
             </li>
@@ -74,7 +76,7 @@
                 </li>
             <?php } ?>
             <li class="<?php if ($this->uri->segment(2) === 'profil') echo "active"; ?>">
-                <a href="<?= base_url('admin/profil') ?>">
+                <a href="<?= base_url($uri1 . '/profil') ?>">
                     <i class="fa fa-user"></i> <span>Profil</span>
                 </a>
             </li>
@@ -95,7 +97,7 @@
                 </li>
             <?php } else { ?>
                 <li class="<?php if ($this->uri->segment(2) === 'notifikasi') echo "active"; ?>">
-                    <a href="<?= base_url('admin/notifikasi/user') ?>">
+                    <a href="<?= base_url($uri1 . '/notifikasi/user') ?>">
                         <i class="fa fa-bell"></i> <span>Notifikasi</span>
                         <span class="pull-right-container">
                             <span class="label label-primary pull-right">

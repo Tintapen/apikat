@@ -1,3 +1,5 @@
+<?php $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin"; ?>
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -5,14 +7,14 @@
             <small><?= $subtitle ?></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?= base_url('admin/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="<?= base_url($uri1 . '/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li class="active"><?= $title ?></li>
         </ol>
     </section>
     <section class="content">
         <div class="box">
             <div class="box-header">
-                <a href="<?= base_url('admin/notifikasi/dibaca') ?>" class="btn btn-success">
+                <a href="<?= base_url($uri1 . '/notifikasi/dibaca') ?>" class="btn btn-success">
                     <div class="fa fa-check"></div> Tandai Dibaca
                 </a>
             </div>

@@ -1,3 +1,5 @@
+<?php $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin"; ?>
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -5,7 +7,7 @@
             <small><?= $subtitle ?></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?= base_url('admin/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="<?= base_url($uri1 . '/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li class="active"><?= $title ?></li>
         </ol>
     </section>
@@ -60,7 +62,7 @@
                     <!-- Tab Account -->
                     <div class="tab-content">
                         <div class="active tab-pane" id="account">
-                            <form class="form-horizontal" action="<?= base_url('admin/profil/update/') . $this->session->userdata('id') ?>" method="POST" enctype="multipart/form-data">
+                            <form class="form-horizontal" action="<?= base_url($uri1 . '/profil/update/') . $this->session->userdata('id') ?>" method="POST" enctype="multipart/form-data">
                                 <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>" style="display: none">
                                 <div class="box-body">
                                     <div class="form-group">

@@ -6,7 +6,6 @@ use Html2Text\Html2Text;
 
 class Peminjaman extends CI_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -34,16 +33,18 @@ class Peminjaman extends CI_Controller
 
     public function delete($id)
     {
+        $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
         $where = array('id' => $id);
 
         $this->m_model->delete($where, 'tb_peminjaman');
         $this->session->set_flashdata('pesan', 'Data berhasil dihapus!');
-        redirect('admin/peminjaman');
+        redirect($uri1 . '/peminjaman');
     }
 
     public function insert()
     {
         date_default_timezone_set('Asia/Jakarta');
+        $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
 
         $idUser             = $this->session->userdata('id');
         $tanggalPinjam      = $_POST['tanggalPinjam'];
@@ -88,7 +89,7 @@ class Peminjaman extends CI_Controller
         foreach ($this->m_model->get_where($data, 'tb_peminjaman')->result() as $dPnjmn) {
 
             $this->session->set_flashdata('pesan', 'Silahkan menambahkan perangkat yang dipinjam!');
-            redirect("admin/peminjaman/kelola/$dPnjmn->id");
+            redirect($uri1 . "/peminjaman/kelola/$dPnjmn->id");
         }
     }
 
@@ -135,6 +136,7 @@ class Peminjaman extends CI_Controller
     public function addtocart($idPeminjaman)
     {
         date_default_timezone_set('Asia/Jakarta');
+        $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
 
         if (empty($_POST['idPerangkat'])) {
             $this->session->set_flashdata('pesanError', 'Centang minimal 1 perangkat untuk dipinjam');
@@ -167,16 +169,17 @@ class Peminjaman extends CI_Controller
             }
 
             $this->session->set_flashdata('pesan', 'Perangkat berhasil dipinjam!');
-            //redirect("admin/peminjaman/kelola/$idPeminjaman");
-            redirect("admin/peminjaman");
+            redirect($uri1 . "/peminjaman/kelola/$idPeminjaman");
         }
     }
 
     public function deletecart($idPeminjaman)
     {
+        $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
+
         if (empty($_POST['idPinjam'])) {
             $this->session->set_flashdata('pesanError', 'Centang minimal 1 perangkat untuk dihapus');
-            redirect("admin/peminjaman/kelola/$idPeminjaman");
+            redirect($uri1 . "/peminjaman/kelola/$idPeminjaman");
         } else {
 
             foreach ($_POST['idPinjam'] as $key => $id) {
@@ -200,7 +203,7 @@ class Peminjaman extends CI_Controller
             }
 
             $this->session->set_flashdata('pesan', 'Perangkat berhasil dihapus. Stok akan dikembalikan!');
-            redirect("admin/peminjaman/kelola/$idPeminjaman");
+            redirect($uri1 . "/peminjaman/kelola/$idPeminjaman");
         }
     }
 
@@ -233,6 +236,7 @@ class Peminjaman extends CI_Controller
     {
         date_default_timezone_set('Asia/Jakarta');
         $terdaftar  = date('Y-m-d H:i:s');
+        $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
 
         if (empty($_POST['idPinjam'])) {
             $this->session->set_flashdata('pesanError', 'Centang minimal 1 perangkat untuk merespon');
@@ -301,7 +305,7 @@ class Peminjaman extends CI_Controller
             if ($respon == 0)
                 $this->responSelesai($idPeminjaman);
 
-            redirect("admin/peminjaman/respon/$idPeminjaman");
+            redirect($uri1 . "/peminjaman/respon/$idPeminjaman");
         }
     }
 

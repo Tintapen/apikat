@@ -1,3 +1,5 @@
+<?php $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin"; ?>
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -5,7 +7,7 @@
             <small><?= $subtitle ?></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?= base_url('admin/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="<?= base_url($uri1 . '/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li class="active"><?= $title ?></li>
         </ol>
     </section>
@@ -59,7 +61,11 @@
                     <div class="inner">
                         <h3>
                             <?php
-                            echo $this->db->query('SELECT id FROM tb_peminjaman')->num_rows();
+                            if ($this->session->userdata('level') === "User") :
+                                echo $this->db->query('SELECT id FROM tb_peminjaman WHERE idUser = "' . $this->session->userdata('id') . '"')->num_rows();
+                            else :
+                                echo $this->db->query('SELECT id FROM tb_peminjaman')->num_rows();
+                            endif;
                             ?>
                         </h3>
 

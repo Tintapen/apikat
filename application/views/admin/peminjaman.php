@@ -1,3 +1,5 @@
+<?php $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin"; ?>
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -5,7 +7,7 @@
             <small><?= $subtitle ?></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?= base_url('admin/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="<?= base_url($uri1 . '/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li class="active"><?= $title ?></li>
         </ol>
     </section>
@@ -78,14 +80,14 @@
                                     <!-- <td><?= date('d F Y H:i:s', strtotime($row['terdaftar'])) ?></td> -->
                                     <td>
                                         <?php if ($row['idUser'] == $this->session->userdata('id')) { ?>
-                                            <a href="<?= base_url('admin/peminjaman/kelola/') . $row['id'] ?>" class="btn btn-info btn-xs" style="margin-bottom: 1px">
+                                            <a href="<?= base_url($uri1 . '/peminjaman/kelola/') . $row['id'] ?>" class="btn btn-info btn-xs" style="margin-bottom: 1px">
                                                 <div class="fa fa-history"></div> Kelola
                                             </a>
                                             <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#editData<?= $row['id'] ?>" style="margin-bottom: 1px">
                                                 <div class="fa fa-edit"></div> Edit
                                             </button>
                                             <?php if (empty($dipinjam)) { ?>
-                                                <a href="<?= base_url('admin/peminjaman/delete/') . $row['id'] ?>" class="btn btn-danger btn-xs tombol-yakin" data-isidata="Ingin menghapus data ini">
+                                                <a href="<?= base_url($uri1 . '/peminjaman/delete/') . $row['id'] ?>" class="btn btn-danger btn-xs tombol-yakin" data-isidata="Ingin menghapus data ini">
                                                     <div class="fa fa-trash"></div> Delete
                                                 </a>
                                             <?php } ?>
@@ -95,7 +97,7 @@
                                                 <div class="fa fa-pencil"></div> Respon
                                             </a>
                                         <?php } ?>
-                                        <a href="<?= base_url('admin/peminjaman/cetakdisetujui/') . $row['id'] ?>" class="btn btn-success btn-xs" target="_blank">
+                                        <a href="<?= base_url($uri1 . '/peminjaman/cetakdisetujui/') . $row['id'] ?>" class="btn btn-success btn-xs" target="_blank">
                                             <div class="fa fa-print"></div> Cetak Bukti
                                         </a>
                                     </td>

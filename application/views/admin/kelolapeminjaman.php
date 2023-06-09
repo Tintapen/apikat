@@ -1,3 +1,5 @@
+<?php $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin"; ?>
+
 <div class="content-wrapper">
     <section class="content-header">
         <h1>
@@ -5,7 +7,7 @@
             <small><?= $subtitle ?></small>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="<?= base_url('admin/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="<?= base_url($uri1 . '/dashboard') ?>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
             <li class="active"><?= $title ?></li>
         </ol>
     </section>
@@ -14,10 +16,10 @@
             <div class="col-md-4">
                 <div class="box">
                     <div class="box-header">
-                        <a class="btn btn-primary" href="<?= site_url('admin/peminjaman') ?>">
+                        <a class="btn btn-primary" href="<?= site_url($uri1 . '/peminjaman') ?>">
                             <div class="fa fa-arrow-left"></div> Kembali
                         </a>
-                        <a href="<?= base_url('admin/peminjaman/cetakdisetujui/') . $idPeminjaman ?>" class="btn btn-success">
+                        <a href="<?= base_url($uri1 . '/peminjaman/cetakdisetujui/') . $idPeminjaman ?>" class="btn btn-success">
                             <div class="fa fa-print"></div> Cetak Disetujui
                         </a>
                     </div>
@@ -79,7 +81,7 @@
                     <div class="box-header">
                         <h4 class="box-title">Dipinjam (<?= $dipinjam->num_rows() ?>)</h4>
                     </div>
-                    <form action="<?= base_url('admin/peminjaman/deletecart/') . $dPeminjaman['id'] ?>" method="POST">
+                    <form action="<?= base_url($uri1 . '/peminjaman/deletecart/') . $dPeminjaman['id'] ?>" method="POST">
                         <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>" style="display: none">
                         <div class="box-body">
                             <div class="table-responsive">
@@ -149,7 +151,7 @@
             <div class="box-header">
                 <h4 class="box-title">Daftar Perangkat (<?= $perangkat->num_rows() ?>)</h4>
             </div>
-            <form action="<?= base_url('admin/peminjaman/addtocart/') . $dPeminjaman['id'] ?>" method="POST">
+            <form action="<?= base_url($uri1 . '/peminjaman/addtocart/') . $dPeminjaman['id'] ?>" method="POST">
                 <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>" style="display: none">
                 <div class="box-body">
                     <div class="table-responsive">

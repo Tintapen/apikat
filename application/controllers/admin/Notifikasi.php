@@ -1,12 +1,13 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Notifikasi extends CI_Controller {
+class Notifikasi extends CI_Controller
+{
 
     public function __construct()
     {
         parent::__construct();
-        if(!$this->session->userdata('level')){
+        if (!$this->session->userdata('level')) {
             $this->session->set_flashdata('pesan', 'Anda harus masuk terlebih dahulu!');
             redirect('home');
         }
@@ -19,7 +20,7 @@ class Notifikasi extends CI_Controller {
 
         $this->db->where('tujuan', 'Administrator');
         $data['notifikasi'] = $this->m_model->get_desc('tb_notifikasi');
-        
+
         $this->load->view('admin/templates/header', $data);
         $this->load->view('admin/templates/sidebar');
         $this->load->view('admin/notifikasi');
@@ -34,7 +35,7 @@ class Notifikasi extends CI_Controller {
         $this->db->where('idUser', $this->session->userdata('id'));
         $this->db->where('tujuan', 'User');
         $data['notifikasi'] = $this->m_model->get_desc('tb_notifikasi');
-        
+
         $this->load->view('admin/templates/header', $data);
         $this->load->view('admin/templates/sidebar');
         $this->load->view('admin/notifikasi');
@@ -43,7 +44,9 @@ class Notifikasi extends CI_Controller {
 
     public function dibaca()
     {
-        if($this->session->userdata('level') == 'Administrator') {
+        $uri1 = $this->session->userdata('level') === "User" ? "user" : "admin";
+
+        if ($this->session->userdata('level') == 'Administrator') {
             $where = array(
                 'dibaca' => 'Belum Dibaca',
                 'tujuan' => 'Administrator',
@@ -63,7 +66,7 @@ class Notifikasi extends CI_Controller {
 
             $this->m_model->update($where, $data, 'tb_notifikasi');
             $this->session->set_flashdata('pesan', 'Notifikasi berhasil ditandai terbaca!');
-            redirect('admin/notifikasi/user');
+            redirect($uri1 . '/notifikasi/user');
         }
     }
 }
