@@ -28,6 +28,7 @@
                                 <th>Pesan Notifikasi</th>
                                 <th>Keterangan</th>
                                 <th>Terdaftar</th>
+                                <th>Tgl Kembali</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,6 +57,9 @@
                                         ?>
                                     </td>
                                     <td><?= date('d F Y H:i:s', strtotime($row['terdaftar'])) ?></td>
+                                    <?php if (!empty($row['tglkembali'])) : ?>
+                                        <td><?= date('d F Y H:i:s', strtotime($row['tglkembali'])) ?></td>
+                                    <?php endif; ?>
                                 </tr>
                             <?php } ?>
                         </tbody>

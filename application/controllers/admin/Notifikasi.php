@@ -34,6 +34,10 @@ class Notifikasi extends CI_Controller
 
         $this->db->where('idUser', $this->session->userdata('id'));
         $this->db->where('tujuan', 'User');
+        $this->db->group_start()
+            ->where("DATE(tglkembali) <", date("Y-m-d"))
+            ->or_where("DATE(tglkembali)", null)
+            ->group_end();
         $data['notifikasi'] = $this->m_model->get_desc('tb_notifikasi');
 
         $this->load->view('admin/templates/header', $data);
