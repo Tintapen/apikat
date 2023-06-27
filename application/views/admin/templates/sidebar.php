@@ -105,6 +105,10 @@
                                 $this->db->where('dibaca', 'Belum Dibaca');
                                 $this->db->where('idUser', $this->session->userdata('id'));
                                 $this->db->where('tujuan', 'User');
+                                $this->db->group_start()
+                                    ->where("DATE(tglkembali) <", date("Y-m-d"))
+                                    ->or_where("DATE(tglkembali)", null)
+                                    ->group_end();
                                 echo $this->db->get('tb_notifikasi')->num_rows();
                                 ?>
                             </span>
