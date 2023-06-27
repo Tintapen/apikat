@@ -61,14 +61,16 @@ class Notifikasi extends CI_Controller
             $this->session->set_flashdata('pesan', 'Notifikasi berhasil ditandai terbaca!');
             redirect('admin/notifikasi/admin');
         } else {
-            $where = array(
-                'dibaca' => 'Belum Dibaca',
-                'tujuan' => 'User',
-                'idUser' => $this->session->userdata('id'),
-            );
-            $data = array('dibaca' => 'Sudah Dibaca');
+            $this->db->set('dibaca', 'Sudah Dibaca');
+            $this->db->where('idUser', $this->session->userdata('id'));
+            $this->db->where('tujuan', 'User');
+            $this->db->where('dibaca', 'Belum Dibaca');
+            $this->db->group_start()
+                ->where("DATE(tglkembali) <", date("Y-m-d"))
+                ->or_where("DATE(tglkembali)", null)
+                ->group_end();
+            $this->db->update('tb_notifikasi');
 
-            $this->m_model->update($where, $data, 'tb_notifikasi');
             $this->session->set_flashdata('pesan', 'Notifikasi berhasil ditandai terbaca!');
             redirect($uri1 . '/notifikasi/user');
         }
