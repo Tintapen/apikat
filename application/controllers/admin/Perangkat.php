@@ -95,4 +95,25 @@ class Perangkat extends CI_Controller
         $this->load->view('admin/historyperangkat');
         $this->load->view('admin/templates/footer');
     }
+
+    public function get_data($id)
+    {
+        if (!empty($id))
+            $this->db->where('id', $id);
+
+        $list = $this->m_model->get_desc('tb_perangkat')->result_array();
+
+        foreach ($list as $key => $value) :
+            $result['id'] = $value['id'];
+            $result['nama'] = $value['nama'];
+            $result['deskripsi'] = $value['deskripsi'];
+
+            $this->db->where('id', $id);
+            $kategori = $this->m_model->get_desc('tb_kategori')->row();
+
+            $result['kategori'] = $kategori->kategori;
+        endforeach;
+
+        echo json_encode($result);
+    }
 }
