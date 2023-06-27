@@ -13,198 +13,129 @@
     </section>
     <section class="content">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
-                        <a class="btn btn-primary" href="<?= site_url($uri1 . '/peminjaman') ?>">
-                            <div class="fa fa-arrow-left"></div> Kembali
-                        </a>
-                        <a href="<?= base_url($uri1 . '/peminjaman/cetakdisetujui/') . $idPeminjaman ?>" class="btn btn-success">
-                            <div class="fa fa-print"></div> Cetak Disetujui
-                        </a>
+                        <h4 class="box-title"><?= $form_title ?></h4>
                     </div>
-                    <div class="box-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover">
-                                <?php foreach ($peminjaman->result_array() as $dPeminjaman) { ?>
-                                    <tr>
-                                        <td width="140px">Nomor</td>
-                                        <td width="10px">:</td>
-                                        <td><?= $dPeminjaman['nomor'] ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Peminjam</td>
-                                        <td>:</td>
-                                        <td>
-                                            <?php
-                                            $where = array('id' => $dPeminjaman['idUser']);
-                                            $nama_user = $this->m_model->get_where($where, 'tb_user');
-                                            foreach ($nama_user->result() as $nUsr) {
-                                                echo $nUsr->nama;
-                                            }
-                                            ?>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tanggal Pinjam</td>
-                                        <td>:</td>
-                                        <td><?= date('d F Y', strtotime($dPeminjaman['tanggalPinjam'])) ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tanggal Kembali</td>
-                                        <td>:</td>
-                                        <td><?= date('d F Y', strtotime($dPeminjaman['tanggalKembali'])) ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Keperluan</td>
-                                        <td>:</td>
-                                        <td><?= $dPeminjaman['keperluan'] ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Keterangan</td>
-                                        <td>:</td>
-                                        <td><?= $dPeminjaman['keterangan'] ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Terdaftar</td>
-                                        <td>:</td>
-                                        <td><?= date('d F Y H:i:s', strtotime($dPeminjaman['terdaftar'])) ?></td>
-                                    </tr>
-                                <?php } ?>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="box">
-                    <div class="box-header">
-                        <h4 class="box-title">Dipinjam (<?= $dipinjam->num_rows() ?>)</h4>
-                    </div>
-                    <form action="<?= base_url($uri1 . '/peminjaman/deletecart/') . $dPeminjaman['id'] ?>" method="POST">
-                        <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>" style="display: none">
+                    <form class="form-horizontal" action="<?= base_url($uri1 . '/peminjaman/insert') ?>" method="POST">
                         <div class="box-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover dataTable">
-                                    <thead>
-                                        <tr>
-                                            <th width="10px">#</th>
-                                            <th>Kategori</th>
-                                            <th>Nama Perangkat</th>
-                                            <th>Deskripsi</th>
-                                            <th>Jumlah</th>
-                                            <th>Status</th>
-                                            <!-- <th>Terdaftar</th> -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($dipinjam->result_array() as $dPinjam) { ?>
+                            <div class="form-group">
+                                <label for="keperluan" class="col-sm-2 control-label">Tujuan Peminjaman </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="keperluan" name="keperluan" placeholder="Tujuan Peminjaman" value="<?= isset($peminjaman) ? $peminjaman->keperluan : null ?>" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="keterangan" class="col-sm-2 control-label">Keterangan </label>
+                                <div class="col-md-4">
+                                    <input type="text" class="form-control" id="keterangan" name="keterangan" value="<?= isset($peminjaman) ? $peminjaman->keterangan : null ?>">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="tanggalPinjam" class="col-sm-2 control-label">Tanggal Pinjam </label>
+                                <div class="col-md-2">
+                                    <input type="date" name="tanggalPinjam" class="form-control" value="<?= isset($peminjaman) ? $peminjaman->tanggalPinjam : date('Y-m-d') ?>" placeholder="Tanggal Mulai" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="date" name="tanggalKembali" class="form-control" value="<?= isset($peminjaman) ? $peminjaman->tanggalKembali : date('Y-m-d') ?>" placeholder="Tanggal Selesai" required>
+                                </div>
+                            </div>
+                            <?php if (isset($peminjaman) && $peminjaman->isstatus === "N" || !isset($peminjaman)) : ?>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label"></label>
+                                    <div class="col-md-2">
+                                        <button type="button" name="button" class="btn btn-primary btn-sm tambah_item" title="Tambah Item"><i class="fa fa-plus"></i> Tambah Item</button>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
+                            <div class="row">
+                                <div class="col-md-12 table-responsive">
+                                    <table class="table table-bordered table-striped table-hover dataTablePeminjaman" width="100%">
+                                        <thead>
                                             <tr>
-                                                <td>
-                                                    <?php if ($dPinjam['status'] == 'Diproses') { ?>
-                                                        <input type="checkbox" name="idPinjam[]" value="<?= $dPinjam['id'] ?>">
-                                                    <?php } ?>
-                                                </td>
-                                                <td>
-                                                    <?php
-                                                    $where = array('id' => $dPinjam['idKategori']);
-                                                    $nama_kategori = $this->m_model->get_where($where, 'tb_kategori');
-                                                    foreach ($nama_kategori->result() as $nKtg) {
-                                                        echo $nKtg->kategori;
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td><?= $dPinjam['nama'] ?></td>
-                                                <td><?= $dPinjam['deskripsi'] ?></td>
-                                                <td><?= $dPinjam['jumlah'] ?></td>
-                                                <td>
-                                                    <?php
-                                                    if ($dPinjam['status'] == 'Diproses') {
-                                                        echo '<div class="label label-warning"><div class="fa fa-history"> ' . $dPinjam['status'] . '</div>';
-                                                    } else if ($dPinjam['status'] == 'Disetujui') {
-                                                        echo '<div class="label label-success"><div class="fa fa-check"> ' . $dPinjam['status'] . '</div>';
-                                                    }
-                                                    if ($dPinjam['status'] == 'Ditolak') {
-                                                        echo '<div class="label label-danger"><div class="fa fa-close"> ' . $dPinjam['status'] . '</div>';
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <!-- <td><?= date('d F Y H:i:s', strtotime($dPinjam['terdaftar'])) ?></td> -->
+                                                <th>Nama Perangkat</th>
+                                                <th>Jumlah</th>
+                                                <th>Kategori</th>
+                                                <th>Deskripsi</th>
+                                                <th>Aksi</th>
                                             </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <?php if (isset($dipinjam)) : ?>
+                                            <tbody>
+                                                <?php foreach ($dipinjam as $val) : ?>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <select class="form-control select2" name="perangkat[]" style="width: 300px;" required>
+                                                                    <option value=""></option>
+                                                                    <?php foreach ($perangkat as $row) : ?>
+                                                                        <?php if ($val['idPerangkat'] == $row['id']) : ?>
+                                                                            <option value="<?= $row['id'] ?>" selected><?= $row['nama'] ?>></option>
+                                                                        <?php else : ?>
+                                                                            <option value="<?= $row['id'] ?>"><?= $row['nama'] ?>></option>
+                                                                        <?php endif; ?>
+                                                                    <?php endforeach; ?>
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-group">
+                                                                <input type="text" class="form-control" name="jumlah[]" value="<?= $val['jumlah'] ?>" style="width: 125px;" required>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <?php foreach ($perangkat as $row) :
+                                                                if ($val['idPerangkat'] == $row['id']) :
+                                                                    foreach ($kategori as $row2) :
+                                                                        if ($row2['id'] == $row['idKategori']) :
+                                                                            echo $row2['kategori'];
+                                                                        endif;
+                                                                    endforeach;
+                                                                endif;
+                                                            endforeach; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php foreach ($perangkat as $row) :
+                                                                if ($val['idPerangkat'] == $row['id']) :
+                                                                    echo $row['deskripsi'];
+                                                                endif;
+                                                            endforeach; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php if ($val['status'] !== "Disetujui") : ?>
+                                                                <div class="form-group">
+                                                                    <button type="button" title="Delete" class="btn btn-social-icon btn-sm btn-danger btn_delete">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                    <input type="hidden" class="form-control" name="dipinjam_id[]" value="<?= $val['id'] ?>" readonly>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            </tbody>
+                                        <?php endif; ?>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <input type="hidden" class="form-control" id="id" name="id" value="<?= isset($idPeminjaman) ? $idPeminjaman : "" ?>" readonly>
+                                </div>
                             </div>
                         </div>
-                        <?php if (!empty($dipinjam->num_rows())) { ?>
-                            <div class="box-footer">
-                                <button class="btn btn-danger">
-                                    <div class="fa fa-trash"></div> Delete
-                                </button>
-                            </div>
-                        <?php } ?>
+                        <div class="box-footer">
+                            <a class="btn btn-primary" href="<?= site_url($uri1 . '/peminjaman') ?>">
+                                <div class="fa fa-arrow-left"></div> Kembali
+                            </a>
+                            <?php if (isset($peminjaman) && $peminjaman->isstatus === "N" || !isset($peminjaman)) : ?>
+                                <button type="submit" class="btn btn-success">Ajukan Peminjaman</button>
+                            <?php endif; ?>
+                        </div>
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="box">
-            <div class="box-header">
-                <h4 class="box-title">Daftar Perangkat (<?= $perangkat->num_rows() ?>)</h4>
-            </div>
-            <form action="<?= base_url($uri1 . '/peminjaman/addtocart/') . $dPeminjaman['id'] ?>" method="POST">
-                <input type="hidden" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>" style="display: none">
-                <div class="box-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover dataTable">
-                            <thead>
-                                <tr>
-                                    <th width="10px">#</th>
-                                    <th>Jumlah</th>
-                                    <th>Kategori</th>
-                                    <th>Nama Perangkat</th>
-                                    <th>Deskripsi</th>
-                                    <?php if ($this->session->userdata('level') == 'Administrator') { ?>
-                                        <th>Stok</th>
-                                    <?php } ?>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $no = 1;
-                                foreach ($perangkat->result_array() as $row) {
-                                ?>
-                                    <tr>
-                                        <td>
-                                            <?= $no++ ?>
-                                            <input type="checkbox" name="idPerangkat[]" value="<?= $row['id'] ?>" checked hidden>
-                                        </td>
-                                        <td><input type="number" name="jumlah[]" placeholder="Jumlah" value="0"></td>
-                                        <td>
-                                            <?php
-                                            $where = array('id' => $row['idKategori']);
-                                            $nama_kategori = $this->m_model->get_where($where, 'tb_kategori');
-                                            foreach ($nama_kategori->result() as $nKtg) {
-                                                echo $nKtg->kategori;
-                                            }
-                                            ?>
-                                        </td>
-                                        <td><?= $row['nama'] ?></td>
-                                        <td><?= $row['deskripsi'] ?></td>
-                                        <?php if ($this->session->userdata('level') == 'Administrator') { ?>
-                                            <td><?= $row['stok'] ?></td>
-                                        <?php } ?>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="box-footer">
-                    <button class="btn btn-success">
-                        <div class="fa fa-cart-plus"></div> Pinjam
-                    </button>
-                </div>
-            </form>
         </div>
     </section>
 </div>

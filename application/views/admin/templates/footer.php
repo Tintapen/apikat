@@ -304,7 +304,109 @@
   // Data Table
   $(document).ready(function() {
     $('.dataTable').DataTable();
+
+    var _tablePinjam;
+
+    _tablePinjam = $(".dataTablePeminjaman").DataTable({
+      drawCallback: function(settings) {
+        $(this)
+          .find(".number")
+          .on("keypress keyup blur", function(evt) {
+            $(this).val(
+              $(this)
+              .val()
+              .replace(/[^\d-].+/, "")
+            );
+            if (
+              (evt.which < 48 && evt.which != 45) ||
+              (evt.which > 57 && evt.which != 189)
+            ) {
+              evt.preventDefault();
+            }
+          });
+        $(this).find(".select2").select2({
+          placeholder: "Select an option",
+          allowClear: true,
+        });
+      },
+      lengthChange: false,
+      pageLength: 20,
+      searching: false,
+      ordering: false,
+      autoWidth: false,
+    });
+
+    $(".tambah_item").click(function(e) {
+      e.preventDefault();
+      let url = "<?= site_url("admin/peminjaman/tambah_line") ?>";
+      let _this = $(this);
+      let oriElement = _this.html();
+      let textElement = _this.text().trim();
+
+      $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "JSON",
+        beforeSend: function() {
+          $(".btn_kembali").attr("disabled", true);
+          $(".btn_ajukan").attr("disabled", true);
+          $(_this)
+            .html(
+              '<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>' +
+              textElement
+            )
+            .prop("disabled", true);
+        },
+        complete: function() {
+          $(".btn_kembali").removeAttr("disabled");
+          $(".btn_ajukan").removeAttr("disabled");
+          $(_this).html(oriElement).prop("disabled", false);
+        },
+        success: function(result) {
+          _tablePinjam.row.add(result).draw(false);
+        },
+        error: function(jqXHR, exception) {
+          showError(jqXHR, exception);
+        },
+      });
+    });
+
+    _tablePinjam.on("change", 'select.perangkat', function(e) {
+      var id = this.value;
+      var tr = $(this).closest("tr");
+
+      $.ajax({
+        url: "<?= site_url('admin/perangkat/get_data/') ?>" + id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(response) {
+          tr.find("td:eq(2)").html(response.kategori);
+          tr.find("td:eq(3)").html(response.deskripsi);
+        }
+      });
+    })
+
+    _tablePinjam.on("click", ".btn_delete", function(evt) {
+      evt.preventDefault();
+      const tr = _tablePinjam.$(this).closest("tr");
+      const row = _tablePinjam.row(tr);
+      row.remove().draw(false);
+    });
   });
+
+  function showError(xhr, exception) {
+    let msg = "";
+
+    if (xhr.status === 0) msg = "Not connect.\n Verify Network.";
+    else if (xhr.status == 404) msg = "Requested page not found. [404]";
+    else if (xhr.status == 500) msg = "Internal Server Error [500].";
+    else if (exception === "parsererror") msg = "Requested JSON parse failed.";
+    else if (exception === "timeout") msg = "Time out error.";
+    else if (exception === "abort") msg = "Ajax request aborted.";
+    else msg = "Uncaught Error.\n" + xhr.responseText;
+
+    console.log(msg);
+  }
 
   // Notifikasi Success
   const flashData = $('.flash-data').data('flashdata');
@@ -333,7 +435,25 @@
 
   $(function() {
     //Initialize Select2 Elements
-    $('.select2').select2()
+    $('.select2').select2({
+      placeholder: "Select an option",
+      allowClear: true,
+    })
+
+    $(".number")
+      .on("keypress keyup blur", function(evt) {
+        $(this).val(
+          $(this)
+          .val()
+          .replace(/[^\d-].+/, "")
+        );
+        if (
+          (evt.which < 48 && evt.which != 45) ||
+          (evt.which > 57 && evt.which != 189)
+        ) {
+          evt.preventDefault();
+        }
+      });
   })
 
   //Editor

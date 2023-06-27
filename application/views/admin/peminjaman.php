@@ -17,9 +17,12 @@
     <section class="content">
         <div class="box">
             <div class="box-header">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#tambahData">
+                <a href="<?= base_url($uri1 . '/peminjaman/tambah') ?>" class="btn btn-primary">
                     <div class="fa fa-plus"></div> Tambah Data
-                </button>
+                </a>
+                <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#tambahData">
+                    <div class="fa fa-plus"></div> Tambah Data
+                </button> -->
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -83,16 +86,16 @@
                                             <a href="<?= base_url($uri1 . '/peminjaman/kelola/') . $row['id'] ?>" class="btn btn-info btn-xs" style="margin-bottom: 1px">
                                                 <div class="fa fa-history"></div> Kelola
                                             </a>
-                                            <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#editData<?= $row['id'] ?>" style="margin-bottom: 1px">
+                                            <!-- <button class="btn btn-warning btn-xs" data-toggle="modal" data-target="#editData<?= $row['id'] ?>" style="margin-bottom: 1px">
                                                 <div class="fa fa-edit"></div> Edit
-                                            </button>
-                                            <?php if (empty($dipinjam)) { ?>
+                                            </button> -->
+                                            <?php if (empty($dipinjam) && $row['isstatus'] === "N") { ?>
                                                 <a href="<?= base_url($uri1 . '/peminjaman/delete/') . $row['id'] ?>" class="btn btn-danger btn-xs tombol-yakin" data-isidata="Ingin menghapus data ini">
                                                     <div class="fa fa-trash"></div> Delete
                                                 </a>
                                             <?php } ?>
                                         <?php } ?>
-                                        <?php if ($this->session->userdata('level') == 'Administrator') { ?>
+                                        <?php if ($this->session->userdata('level') == 'Administrator' && $row['isstatus'] === "N") { ?>
                                             <a href="<?= base_url('admin/peminjaman/respon/') . $row['id'] ?>" class="btn btn-primary btn-xs" style="margin-bottom: 1px">
                                                 <div class="fa fa-pencil"></div> Respon
                                             </a>

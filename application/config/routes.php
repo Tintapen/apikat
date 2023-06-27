@@ -59,10 +59,12 @@ $route['user/perangkat'] = 'admin/perangkat';
 $route['user/peminjaman'] = 'admin/peminjaman';
 $route['user/peminjaman/kelola/(:num)'] = 'admin/peminjaman/kelola/$1';
 $route['user/peminjaman/cetakdisetujui/(:num)'] = 'admin/peminjaman/cetakdisetujui/$1';
-$route['user/peminjaman/addtocart/(:num)'] = 'admin/peminjaman/addtocart/$1';
 $route['user/peminjaman/delete/(:num)'] = 'admin/peminjaman/delete/$1';
 $route['user/peminjaman/deletecart/(:num)'] = 'admin/peminjaman/deletecart/$1';
 $route['user/peminjaman/respon/(:num)'] = 'admin/peminjaman/respon/$1';
+$route['user/peminjaman/tambah'] = 'admin/peminjaman/kelola';
+$route['user/peminjaman/insert'] = 'admin/peminjaman/insert';
+$route['admin/peminjaman/tambah'] = 'admin/peminjaman/kelola';
 
 $route['user/profil'] = 'admin/profil';
 $route['user/profil/update/(:num)'] = 'admin/profil/update/$1';
