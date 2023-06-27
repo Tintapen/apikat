@@ -353,6 +353,7 @@ class Peminjaman extends CI_Controller
                         'keterangan'    => 'Pengajuan peminjaman telah direspon',
                         'tujuan'        => 'User',
                         'dibaca'        => 'Belum Dibaca',
+                        'terdaftar'     => $terdaftar,
                         'tglkembali'    => $pinjam->tanggalKembali
                     );
 
